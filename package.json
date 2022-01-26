@@ -4,6 +4,8 @@
   "description": "Returns hardcoded list of phonebook entries from the address http://localhost:3000/api/persons.",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,5 +13,11 @@
     "url": "fso-part3-exercises"
   },
   "author": "Dzmitry Yabkevich",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
