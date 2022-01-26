@@ -1,0 +1,15 @@
+{
+  "name": "phonebook-entries",
+  "version": "0.0.1",
+  "description": "Returns hardcoded list of phonebook entries from the address http://localhost:3000/api/persons.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "fso-part3-exercises"
+  },
+  "author": "Dzmitry Yabkevich",
+  "license": "MIT"
+}
