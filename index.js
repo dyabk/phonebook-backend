@@ -25,6 +25,20 @@ let persons = [
     }
 ]
 
+const generateID = () => {
+    const newRandom = Math.floor(Math.random() * 4400)
+
+    if (persons
+        .map(person => person.id)
+        .includes(newRandom)) {
+        return generateID()
+    } else {
+        return newRandom
+    }
+}
+
+app.use(express.json())
+
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
@@ -49,6 +63,13 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.get('/info', (request, response) => {
     response.send(`Phonebook has info for ${persons.length} people<br><br>${Date()}`)
+})
+
+app.post('api/notes', (request, response) => {
+    const newEntry = request.body
+    newEntry.id = generateID()
+
+    response.json(newEntry)
 })
 
 const PORT = 3001
