@@ -65,11 +65,11 @@ app.get('/info', (request, response) => {
     response.send(`Phonebook has info for ${persons.length} people<br><br>${Date()}`)
 })
 
-app.post('api/notes', (request, response) => {
+app.post('/api/persons', (request, response) => {
     const body = request.body
 
     if(!body.name || !body.number) {
-        return request.status(400).json({
+        return response.status(400).json({
             error: 'Some information (name or number) missing'
         })
     }
@@ -80,7 +80,7 @@ app.post('api/notes', (request, response) => {
         number: body.number
     }
 
-    persons = person.concat(person)
+    persons = persons.concat(person)
     response.json(person)
 })
 
