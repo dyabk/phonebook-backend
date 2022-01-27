@@ -66,10 +66,22 @@ app.get('/info', (request, response) => {
 })
 
 app.post('api/notes', (request, response) => {
-    const newEntry = request.body
-    newEntry.id = generateID()
+    const body = request.body
 
-    response.json(newEntry)
+    if(!body.name || !body.number) {
+        return request.status(400).json({
+            error: 'Some information (name or number) missing'
+        })
+    }
+
+    const person = {
+        id: generateID(),
+        name: body.name,
+        number: body.number
+    }
+
+    persons = person.concat(person)
+    response.json(person)
 })
 
 const PORT = 3001
