@@ -1,6 +1,9 @@
-const e = require('express')
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
+
+app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
 let persons = [
     { 
@@ -36,8 +39,6 @@ const generateID = () => {
         return newRandom
     }
 }
-
-app.use(express.json())
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
