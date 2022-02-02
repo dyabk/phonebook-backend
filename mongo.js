@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const helper = require('/index')
 
 const argvLength = process.argv.length
 
@@ -8,8 +7,12 @@ if (argvLength < 3) {
     process.exit(1)
 } else {
     const password = process.argv[2]
+
+    const url =
+        `mongodb+srv://majabaza:${password}@cluster0.k9dqp.mongodb.net/person-app?retryWrites=true&w=majority`
+    mongoose.connect(url)
+
     const personSchema = new mongoose.Schema({
-        id: Number, 
         name: String,
         number: String
     })
@@ -30,7 +33,6 @@ if (argvLength < 3) {
         const number = (process.argv.length > 4) ? process.argv[4] : ''
 
         const person = new Person({
-            id: helper.generateID(),
             name,
             number,
         })
