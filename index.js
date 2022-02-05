@@ -78,7 +78,7 @@ app.get('/info', (request, response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if(!body.name || !body.number) {
+    if(body.name === undefined || body.number === undefined) {
         return response.status(400).json({
             error: 'Some information (name or number) missing'
         })
@@ -88,14 +88,14 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    const person = {
-        id: generateID(),
+    const person = new Person({
         name: body.name,
         number: body.number
-    }
+    })
 
-    persons = persons.concat(person)
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 const PORT = process.env.PORT
