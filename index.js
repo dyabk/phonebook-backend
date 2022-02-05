@@ -61,14 +61,9 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-    if (person) {
+    Person.findById(request.params.id).then(person => {
         response.json(person)
-    }
-    else {
-        response.status(404).end()
-    }
+    })
 })
 
 app.get('/info', (request, response) => {
@@ -81,10 +76,6 @@ app.post('/api/persons', (request, response) => {
     if(body.name === undefined || body.number === undefined) {
         return response.status(400).json({
             error: 'Some information (name or number) missing'
-        })
-    } else if (persons.map(person => person.name).includes(body.name)) {
-        return response.status(400).json({
-            error: 'Name is not unique'
         })
     }
 
