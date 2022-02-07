@@ -7,8 +7,8 @@ const morgan = require('morgan')
 const Person = require('./models/person')
 
 app.use(cors())
-app.use(express.json())
 app.use(express.static('build'))
+app.use(express.json())
 morgan.token('sent', (request, response) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :sent'))
 
@@ -48,10 +48,11 @@ const generateID = () => {
 }
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-
-    response.status(204).end()
+    Person.findByIdAndRemove(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
 app.get('/api/persons', (request, response) => {
@@ -104,6 +105,8 @@ const errorHandler = (error, request, response, next) => {
 
     next(error)
 }
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
