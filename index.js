@@ -66,12 +66,12 @@ app.get('/api/persons/:id', (request, response) => {
             if (person) {
                 response.json(person)
             } else {
-                response.status(400).end()
+                response.status(404).end()
             }
         })
         .catch(error => {
             console.log(error)
-            response.status(500).end()
+            response.status(400).send({ error: 'malfortmatted id'})
         })
 })
 
