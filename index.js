@@ -69,10 +69,7 @@ app.get('/api/persons/:id', (request, response) => {
                 response.status(404).end()
             }
         })
-        .catch(error => {
-            console.log(error)
-            response.status(400).send({ error: 'malfortmatted id'})
-        })
+        .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
@@ -97,6 +94,16 @@ app.post('/api/persons', (request, response) => {
         response.json(savedPerson)
     })
 })
+
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+
+    next(error)
+}
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
