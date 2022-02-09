@@ -74,7 +74,9 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    response.send(`Phonebook has info for ${persons.length} people<br><br>${Date()}`)
+    Person.estimatedDocumentCount().then(result => {
+        response.send(`Phonebook has info for ${result} people<br><br>${Date()}`)
+    })
 })
 
 app.post('/api/persons', (request, response) => {
@@ -84,6 +86,7 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({
             error: 'Some information (name or number) missing'
         })
+        .catch(error => next(error))
     }
 
     const person = new Person({
