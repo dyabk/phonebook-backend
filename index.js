@@ -38,7 +38,8 @@ app.post('/api/persons', (request, response) => {
     const body = request.body
 
     if(body.name === undefined || body.number === undefined) {
-        return response.status(400).json({
+        return response.status(400)
+        .json({
             error: 'Some information (name or number) missing'
         })
         .catch(error => next(error))
