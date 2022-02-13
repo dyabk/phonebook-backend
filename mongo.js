@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const argvLength = process.argv.length
 
 if (argvLength < 3) {
-    console.log('Please provide the required arguments: node mongo.js <password> [<name> <number>]')
+    console.log('Please provide the required arguments: node mongo.js <password> [<fullName> <number>]')
     process.exit(1)
 } else {
     const password = process.argv[2]
@@ -13,7 +13,7 @@ if (argvLength < 3) {
     mongoose.connect(url)
 
     const personSchema = new mongoose.Schema({
-        name: String,
+        fullName: String,
         number: String
     })
     const Person = mongoose.model('Person', personSchema)
@@ -29,16 +29,16 @@ if (argvLength < 3) {
         })
     }
     else {
-        const name = process.argv[3]
+        const fullName = process.argv[3]
         const number = (process.argv.length > 4) ? process.argv[4] : ''
 
         const person = new Person({
-            name,
+            fullName,
             number,
         })
           
         person.save().then(result => {
-            console.log(`added ${name} number ${number} to phonebook`)
+            console.log(`added ${fullName} number ${number} to phonebook`)
             mongoose.connection.close()
         })
     }
