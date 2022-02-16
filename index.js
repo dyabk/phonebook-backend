@@ -39,7 +39,11 @@ app.post('/api/persons', (request, response, next) => {
     }
 
     const person = new Person({
-        fullName: body.fullName,
+        fullName: body.fullName       
+            .trim()
+            .split(' ')
+            .map(word => word[0].toUpperCase() + word.slice(1))
+            .join(' '),
         number: body.number
     })
 
