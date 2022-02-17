@@ -30,23 +30,39 @@ app.get('/api/persons', (request, response) => {
 app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
-    if(body.fullName === undefined || body.number === undefined) {
-        return response.status(400)
-        .json({
-            error: 'Some information (name or number) missing'
-        })
-        .catch(error => next(error))
-    }
-
     const person = new Person({
-        fullName: body.fullName       
-            .trim()
-            .split(' ')
-            .map(word => word[0].toUpperCase() + word.slice(1))
-            .join(' '),
+        fullName: body.fullName,
         number: body.number
     })
 
+    if(!body.fullName && !body.number) {
+        return response.status(400)
+        .json({
+            error: 'Adding an empty record is not allowed.'
+        })
+    } else if(!body.fullName) {
+        return response.status(400)
+        .json({
+            error: 'Adding a record without a name is not allowed.'
+        })
+    } else if(!body.number) {
+        return response.status(400)
+        .json({
+            error: 'Adding a record without a number is not allowed.'
+        })
+    }
+
+    Person.find( {fullName: body.fullName}, (error, result) => {
+        if (result !== null) {
+            if (error) {
+                return response.status(400)
+                .json({
+                    error: `${body.fullName} is already added to the phonebook.`
+                })
+            }
+        }
+    })
+    
     person.save()
         .then(savedPerson => {
             console.log('Person saved: ', person)
@@ -78,16 +94,12 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-    const body = request.body
-
-    const person = {
-        number: body.number
-    }
+    const { fullName, number } = request.body
 
     Person.findByIdAndUpdate(
         request.params.id,
-        { fullName, number}, 
-        { new: true, runValidators: true, context: 'query' })
+        { fullName, number },
+        { new: true })
         .then(updatedPerson => {
             response.json(updatedPerson)
         })
